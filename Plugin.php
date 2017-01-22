@@ -4,6 +4,7 @@ namespace Kanboard\Plugin\Redmine;
 
 use Kanboard\Core\Translator;
 use Kanboard\Plugin\Redmine\RedmineTaskProvider;
+use Kanboard\Plugin\Redmine\Action\RedmineTaskUpdateStatusColumn;
 use Kanboard\Core\Plugin\Base;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -31,6 +32,7 @@ class Plugin extends Base
         $this->template->hook->attach('template:config:integrations', 'Redmine:config/integration');
         $this->template->hook->attach('template:user:integrations', 'Redmine:user/integration');
         $this->externalTaskManager->register(new RedmineTaskProvider($this->container));
+        $this->actionManager->register(new RedmineTaskUpdateStatusColumn($this->container));
     }
 
     public function getPluginName()
@@ -55,7 +57,7 @@ class Plugin extends Base
 
     public function getPluginVersion()
     {
-        return '1.0.1';
+        return '1.0.2';
     }
 
     public function getPluginHomepage()
