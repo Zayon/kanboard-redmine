@@ -1,0 +1,5 @@
+{
+    "require": {
+        "kbsali/redmine-api": "1.*"
+    }
+}

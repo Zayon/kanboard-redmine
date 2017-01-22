@@ -36,7 +36,7 @@ class RedmineTaskProvider extends Base implements ExternalTaskProviderInterface
      */
     public function fetch($uri)
     {
-        $issue = $this->httpClient->getJson($uri);
+        $issue = $this->RedmineClient->get($uri);
 
         if (empty($issue)) {
             throw new NotFoundException(t('Redmine Issue not found.'));
@@ -107,20 +107,8 @@ class RedmineTaskProvider extends Base implements ExternalTaskProviderInterface
      */
     public function buildTaskUri(array $formValues)
     {
-        $redmineUrl = $this->configModel->get('redmine_url');
-        $apiToken = $this->userMetadataCacheDecorator->get('redmine_api_token');
-
-        $ticketNumber = $formValues['number'];
-        $ticketNumber = str_replace('#', '', $ticketNumber);
-        $ticketNumber = intval($ticketNumber);
-
-        $uri = $redmineUrl;
-        if (substr($uri, -1) !== '/') {
-            $uri .= '/';
-        }
-        $uri .= 'issues/' . $ticketNumber . '.json?key=' . $apiToken;
-
-        return $uri;
+        $ticketNumber = intval(str_replace('#', '', $formValues['number']));
+        return 'issues/'  . $ticketNumber . '.json';
     }
 
 }

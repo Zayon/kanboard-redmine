@@ -6,6 +6,8 @@ use Kanboard\Core\Translator;
 use Kanboard\Plugin\Redmine\RedmineTaskProvider;
 use Kanboard\Core\Plugin\Base;
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 /**
  * Redmine Plugin
  *
@@ -16,9 +18,19 @@ class Plugin extends Base
 {
     public function initialize()
     {
-        $this->externalTaskManager->register(new RedmineTaskProvider($this->container));
+        $this->container['RedmineClient'] = $this->container->factory(function ($c) {
+            $apiToken = $c['userMetadataCacheDecorator']->get('redmine_api_token', '');
+            $redmineUrl = $c['configModel']->get('redmine_url');
+            if (substr($redmineUrl, -1) !== '/') {
+                $redmineUrl .= '/';
+            }
+
+            return new \Redmine\Client($redmineUrl, $apiToken);
+        });
+
         $this->template->hook->attach('template:config:integrations', 'Redmine:config/integration');
         $this->template->hook->attach('template:user:integrations', 'Redmine:user/integration');
+        $this->externalTaskManager->register(new RedmineTaskProvider($this->container));
     }
 
     public function getPluginName()
@@ -43,7 +55,7 @@ class Plugin extends Base
 
     public function getPluginVersion()
     {
-        return '1.0.0';
+        return '1.0.1';
     }
 
     public function getPluginHomepage()
