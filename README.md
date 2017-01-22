@@ -1,5 +1,5 @@
 # kanboard-redmine
-Import Redmine issues in Kanboard
+Import Redmine issues in [Kanboard](https://github.com/kanboard/kanboard)
 
 Author
 ------
