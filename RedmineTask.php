@@ -14,19 +14,37 @@ class RedmineTask implements ExternalTaskInterface
 {
 
     /**
+     * Data of issue
+     * 
      * @var array
      */
     private $issue;
 
     /**
+     * Uri, format : "/issue/XXXXX.json" where XXXXX is issue number
+     * Used to get and push data using the redmine api
+     * 
+     * @var string
+     */
+    private $jsonUri;
+
+    /**
+     * Uri, format : "/issue/XXXXX" where XXXXX is issue number
+     * Used to provide an url for humans
+     * 
      * @var string
      */
     private $uri;
 
-    public function __construct($uri, array $issue)
+    /**
+     * @param string   $jsonUri   Uri of issue
+     * @param array    $issue     Issue array returned from Redmine
+     */
+    public function __construct($jsonUri, array $issue)
     {
-        $this->uri = $uri;
-        $this->issue = $issue;
+        $this->setJsonUri($jsonUri);
+        $this->setUri(str_replace('.json', '', $jsonUri));
+        $this->setIssue($issue);
     }
 
     /**
@@ -40,13 +58,13 @@ class RedmineTask implements ExternalTaskInterface
     }
 
     /**
-     * Get issue number
-     *
-     * @return int issue number
+     * Set Issue
+     * 
+     * @param array $issue
      */
-    public function getIssueNumber()
+    private function setIssue(array $issue)
     {
-        return $this->issue['id'];
+        $this->issue = $issue;
     }
 
     /**
@@ -57,6 +75,46 @@ class RedmineTask implements ExternalTaskInterface
     public function getUri()
     {
         return $this->uri;
+    }
+
+    /**
+     * Set Uri
+     * 
+     * @param string $uri
+     */
+    private function setUri($uri)
+    {
+        $this->uri = $uri;
+    }
+
+    /**
+     * Return Uniform Resource Identifier for the task
+     *
+     * @return string
+     */
+    public function getJsonUri()
+    {
+        return $this->jsonUri;
+    }
+
+    /**
+     * Set JsonUri
+     * 
+     * @param string
+     */
+    private function setJsonUri($jsonUri)
+    {
+        $this->jsonUri = $jsonUri;
+    }
+
+        /**
+     * Get issue number
+     *
+     * @return int issue number
+     */
+    public function getIssueNumber()
+    {
+        return $this->issue['id'];
     }
 
     /**
