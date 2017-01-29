@@ -7,6 +7,22 @@ use Kanboard\Plugin\Redmine\RedmineTask;
 
 class RedmineHelper extends Base
 {
+
+    /**
+     * Return a link to the redmine url of a task
+     * The content of the link is #number
+     * 
+     * @param  RedmineTask $task Task to link to
+     * @return string            HTML a element
+     */
+    public function getIssueHtmlLink(RedmineTask $task)
+    {
+        $link = '<a href="' . $this->helper->text->e($this->getFullIssueLink($task)) . '" target="_blank">';
+        $link .= '#' . $task->getIssueNumber();
+        $link .= '</a>';
+        return $link;
+    }
+
     /**
      * Get the complete link for an issue
      * Is used to create links to original issue in Redmine

@@ -107,8 +107,7 @@ class RedmineTaskProvider extends Base implements ExternalTaskProviderInterface
      */
     public function buildTaskUri(array $formValues)
     {
-        $ticketNumber = intval(str_replace('#', '', $formValues['number']));
-        return 'issues/'  . $ticketNumber . '.json';
+        return 'issues/' . intval(str_replace('#', '', $formValues['number']));
     }
 
 }

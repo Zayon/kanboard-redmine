@@ -21,14 +21,6 @@ class RedmineTask implements ExternalTaskInterface
     private $issue;
 
     /**
-     * Uri, format : "/issue/XXXXX.json" where XXXXX is issue number
-     * Used to get and push data using the redmine api
-     * 
-     * @var string
-     */
-    private $jsonUri;
-
-    /**
      * Uri, format : "/issue/XXXXX" where XXXXX is issue number
      * Used to provide an url for humans
      * 
@@ -40,10 +32,9 @@ class RedmineTask implements ExternalTaskInterface
      * @param string   $jsonUri   Uri of issue
      * @param array    $issue     Issue array returned from Redmine
      */
-    public function __construct($jsonUri, array $issue)
+    public function __construct($uri, array $issue)
     {
-        $this->setJsonUri($jsonUri);
-        $this->setUri(str_replace('.json', '', $jsonUri));
+        $this->setUri($uri);
         $this->setIssue($issue);
     }
 
@@ -88,26 +79,6 @@ class RedmineTask implements ExternalTaskInterface
     }
 
     /**
-     * Return Uniform Resource Identifier for the task
-     *
-     * @return string
-     */
-    public function getJsonUri()
-    {
-        return $this->jsonUri;
-    }
-
-    /**
-     * Set JsonUri
-     * 
-     * @param string
-     */
-    private function setJsonUri($jsonUri)
-    {
-        $this->jsonUri = $jsonUri;
-    }
-
-        /**
      * Get issue number
      *
      * @return int issue number

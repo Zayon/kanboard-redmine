@@ -6,6 +6,7 @@ use Kanboard\Core\Translator;
 use Kanboard\Plugin\Redmine\RedmineTaskProvider;
 use Kanboard\Plugin\Redmine\Action\RedmineTaskUpdateStatusColumn;
 use Kanboard\Plugin\Redmine\Helper\RedmineHelper;
+use Kanboard\Plugin\Redmine\RedmineClient;
 use Kanboard\Core\Plugin\Base;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -25,7 +26,7 @@ class Plugin extends Base
         $this->container['RedmineClient'] = $this->container->factory(function ($container) {
             $apiToken = $container['userMetadataCacheDecorator']->get('redmine_api_token', '');
             $redmineUrl = $container['helper']->redmine->getRedmineRootUrl();
-            return new \Redmine\Client($redmineUrl, $apiToken);
+            return new RedmineClient($redmineUrl, $apiToken);
         });
 
         $this->template->hook->attach('template:config:integrations', 'Redmine:config/integration');
@@ -56,7 +57,7 @@ class Plugin extends Base
 
     public function getPluginVersion()
     {
-        return '1.0.3';
+        return '1.0.4';
     }
 
     public function getPluginHomepage()
