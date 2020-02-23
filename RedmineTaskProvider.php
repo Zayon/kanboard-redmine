@@ -34,7 +34,7 @@ class RedmineTaskProvider extends Base implements ExternalTaskProviderInterface
      * @param  string $uri
      * @return ExternalTaskInterface
      */
-    public function fetch($uri)
+    public function fetch($uri, $projectID)
     {
         $issue = $this->RedmineClient->get($uri);
 
@@ -109,5 +109,20 @@ class RedmineTaskProvider extends Base implements ExternalTaskProviderInterface
     {
         return 'issues/' . intval(str_replace('#', '', $formValues['number']));
     }
+    
+    /**
+     * Set menu icon
+     */
+    public function getIcon()
+    {
+      return '<i class="fa fa-bug fa-fw"></i>';
+    }
 
+    /**
+     * Set menu title
+     */
+    public function getMenuAddLabel()
+    {
+      return t('Import Redmine task');
+    }
 }
